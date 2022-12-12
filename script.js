@@ -1,6 +1,5 @@
 let totalPokemon = 905;  //not dynamic, last Pokemon is number 905
 let numberOfPokemon = 1; //starting Pokemon
-let oneBlock = 12;
 let greenlight = true;
 
 window.addEventListener('scroll', () => {
@@ -25,14 +24,18 @@ async function loadPokemon(numberOfPokemon) {
     return await payload.json();
 }
 
-function renderUI() {
+function init() {
+    renderHeader();
+    renderPokemon();
+}
+
+function renderHeader() {
     document.body.innerHTML = "";
     document.body.innerHTML += `
     <h1>Pokedex Scroller</h1>
     <div class="d-flex align-items-center flex-wrap justify-content-center" id="content"></div>
     <img id="up" onclick="document.documentElement.scrollTop = 0" class="back-top position-fixed d-flex justify-content-center align-items-center d-none" src="img/up.png">
     `;
-    renderPokemon();
 }
 
 async function renderPokemon() {
