@@ -14,7 +14,7 @@ h1 {
     box-shadow: 0 0 5px 0px rgb(0 0 0 / 25%);
     text-align: center;
     padding: 10px;
-    background-color: rgb(245, 245, 245);
+    background-color: rgb(240, 240, 240);
 }
 
 .card {
@@ -23,7 +23,7 @@ h1 {
     color: white !important;
     cursor: grab;
     box-shadow: 3px 3px 5px 0px rgb(0 0 0 / 25%);
-    border: solid 3px transparent !important;
+    border: solid 1px transparent !important;
 }
 
 .card:active {
@@ -32,8 +32,8 @@ h1 {
 
 .card:hover {
     animation: hover 1s ease-in-out infinite;
-    border: solid 3px #FF3131 !important;
-    box-shadow: 0px 0px 10px 5px #FF3131;
+    border: solid 1px #FF3131 !important;
+    box-shadow: 0px 0px 5px 3px #FF3131;
 }
 
 @keyframes hover {
@@ -106,7 +106,7 @@ h1 {
 ::-webkit-scrollbar {
     width: 5px;
     height: 5px;
-    background-color: rgb(245, 245, 245);
+    background-color: rgb(240, 240, 240);
 }
 
 ::-webkit-scrollbar-track {
@@ -117,4 +117,13 @@ h1 {
 ::-webkit-scrollbar-thumb {
     background: #1F51FF;
     border-radius: 10px;
+}
+
+.blackbox {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
 }

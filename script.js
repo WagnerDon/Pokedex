@@ -1,14 +1,11 @@
 let totalPokemon = 905;  //not dynamic, last Pokemon is number 905
 let numberOfPokemon = 1; //starting Pokemon
-let greenlight = true;
 
 window.addEventListener('scroll', () => {
     const maxscroll = document.documentElement.scrollHeight - window.innerHeight;
     const scrolled = window.scrollY;
-    if (scrolled > maxscroll && greenlight === true) {
-        setTimeout(renderPokemon, 2000);
-        greenlight = false;
-        setTimeout(greenlight = true, 2000)
+    if (scrolled > maxscroll) {
+        renderPokemon();
     }
 
     if (window.scrollY < 500) {
@@ -38,19 +35,34 @@ function renderHeader() {
     `;
 }
 
+async function renderThis(number) {
+    const thisPokemon = await loadPokemon(number);
+    document.body.innerHTML += `
+    <div id="${number}" class="position-fixed blackbox d-flex justify-content-center align-items-center" onclick="remove(${number})">
+        <div onclick="event.stopPropagation()" style="background-color: white">${thisPokemon["name"]}</div>
+    </div>
+    `;
+    document.body.style.overflow = "hidden";
+}
+
+function remove(number) {
+    document.getElementById(number).remove();
+    document.body.style.overflow = "auto";
+}
+
 async function renderPokemon() {
     for (let i = numberOfPokemon; i < numberOfPokemon + 12; i++) {
         if (i <= totalPokemon) {
             let currentPokemon = await loadPokemon(i);
             document.getElementById('content').innerHTML += `
-            <div style="${backgroundColor(currentPokemon["types"][0]["type"]["name"])}" id="${i}" class="card p-3 m-2 position-relative">
+            <div onclick="renderThis(${i})" style="${backgroundColor(currentPokemon["types"][0]["type"]["name"])}" id="${i + "card"}" class="card p-3 m-2 position-relative">
                 <h3>${capital(currentPokemon["name"])}</h3>
                 <img class="front-img position-absolute" src="${currentPokemon["sprites"]["other"]["official-artwork"]["front_default"]}">
                 <img class="pokeball position-absolute" src="img/pokeball.png">
             </div>
             `;
             for (let x = 0; x < currentPokemon["types"].length; x++) {
-                document.getElementById(i).innerHTML += `
+                document.getElementById(i + "card").innerHTML += `
                 <p class="deco">${capital(currentPokemon["types"][x]["type"]["name"])}</p>
                 `;
             }
