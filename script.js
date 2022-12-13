@@ -38,10 +38,31 @@ function renderHeader() {
 async function renderThis(number) {
     const thisPokemon = await loadPokemon(number);
     document.body.innerHTML += `
-    <div id="${number}" class="position-fixed blackbox d-flex justify-content-center align-items-center" onclick="remove(${number})">
-        <div onclick="event.stopPropagation()" style="background-color: white">${thisPokemon["name"]}</div>
+    <div id="test" class="position-fixed blackbox d-flex justify-content-center" onclick="remove('test')">
+        <div class="d-flex flex-column whole" style="${backgroundColor(thisPokemon["types"][0]["type"]["name"])}" onclick="event.stopPropagation()" style="background-color: white">
+            <div class="upper p-5">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <h2>
+                            ${capital(thisPokemon["name"])}
+                        </h2>
+                        <div class="d-flex" id="type"></div>
+                    </div>
+                    <p>#${number}</p>
+                </div>
+                <div>
+                    <img class="card-img" src="${thisPokemon["sprites"]["other"]["official-artwork"]["front_default"]}">
+                </div>
+            </div>
+            <div class="lower p-5"></div>
+        </div>
     </div>
     `;
+    for (let x = 0; x < thisPokemon["types"].length; x++) {
+        document.getElementById("type").innerHTML += `
+        <p class="deco">${capital(thisPokemon["types"][x]["type"]["name"])}</p>
+        `;
+    }
     document.body.style.overflow = "hidden";
 }
 

@@ -62,7 +62,6 @@ h1 {
 .pokeball {
     height: 175px;
     width: 175px;
-    transform: rotate(15deg);
     opacity: 25%;
     right: 0;
     bottom: 0;
@@ -126,4 +125,35 @@ h1 {
     right: 0;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
+}
+
+.whole {
+    width: 50%;
+    border-radius: 12px;
+    position: relative;
+}
+
+.card-img {
+    position: absolute;
+    bottom: 0;
+    left: 100px;
+    height: 250px !important;
+    width: 250px !important;
+}
+
+.upper {
+    height: 50%;
+    color: white;
+    position: relative;
+}
+
+.lower {
+    height: 50%;
+    background-color: white;
+    border-radius: 12px;
+    position: relative;
+}
+
+#type {
+    column-gap: 10px;
 }
