@@ -29,7 +29,7 @@ function init() {
 function renderHeader() {
     document.body.innerHTML = "";
     document.body.innerHTML += `
-    <h1>Pokedex Scroller</h1>
+    <h1><img src="img/pokemon.png"></h1>
     <div class="d-flex align-items-center flex-wrap justify-content-center" id="content"></div>
     <img id="up" onclick="document.documentElement.scrollTop = 0" class="back-top position-fixed d-flex justify-content-center align-items-center d-none" src="img/up.png">
     `;
@@ -39,22 +39,26 @@ async function renderThis(number) {
     const thisPokemon = await loadPokemon(number);
     document.body.innerHTML += `
     <div id="test" class="position-fixed blackbox d-flex justify-content-center" onclick="remove('test')">
-        <div class="d-flex flex-column whole" style="${backgroundColor(thisPokemon["types"][0]["type"]["name"])}" onclick="event.stopPropagation()" style="background-color: white">
-            <div class="upper p-5">
-                <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex flex-column whole" style="${backgroundColor(thisPokemon["types"][0]["type"]["name"])}" onclick="event.stopPropagation()" style="background-color: rgba(255, 255, 255, 25%)">
+            <div class="upper align-items-center p-4 d-flex flex-column justify-content-between">
+                <div class="test position-relative w100" onclick="remove('test')">
+                    <img class="back" src="img/arrow.png">
+                </div>
+                <img class="position-absolute pokeball" src="img/pokeball.png">
+                <div class="w100 d-flex align-items-center justify-content-between">
                     <div>
                         <h2>
                             ${capital(thisPokemon["name"])}
                         </h2>
                         <div class="d-flex" id="type"></div>
                     </div>
-                    <p>#${number}</p>
+                    <p>#${addZero(number)}</p>
                 </div>
-                <div>
-                    <img class="card-img" src="${thisPokemon["sprites"]["other"]["official-artwork"]["front_default"]}">
+                <div class="position-relative card-img">
+                    <img src="${thisPokemon["sprites"]["other"]["official-artwork"]["front_default"]}">
                 </div>
             </div>
-            <div class="lower p-5"></div>
+            <div class="lower p-4"></div>
         </div>
     </div>
     `;
@@ -64,6 +68,16 @@ async function renderThis(number) {
         `;
     }
     document.body.style.overflow = "hidden";
+}
+
+function addZero(value) {
+    if (value < 100) {
+        if (value < 10) {
+            return "00" + value;
+        } else {
+            return "0" + value;
+        }
+    }
 }
 
 function remove(number) {
@@ -98,57 +112,57 @@ function capital(value) {
 
 function backgroundColor(value) {
     if (value === "grass") {
-        return "background-color: rgb(120,200,80)";
+        return "background: rgb(120,200,80)";
     }
     if (value === "normal") {
-        return "background-color: rgb(168,168,120)";
+        return "background: rgb(168,168,120)";
     }
     if (value === "fire") {
-        return "background-color: rgb(240,128,48)";
+        return "background: rgb(240,128,48)";
     }
     if (value === "water") {
-        return "background-color: rgb(104,144,240)";
+        return "background: rgb(104,144,240)";
     }
     if (value === "electric") {
-        return "background-color: rgb(248,208,48)";
+        return "background: rgb(248,208,48)";
     }
     if (value === "ice") {
-        return "background-color: rgb(152,216,216)";
+        return "background: rgb(152,216,216)";
     }
     if (value === "fighting") {
-        return "background-color: rgb(192,48,40)";
+        return "background: rgb(192,48,40)";
     }
     if (value === "poison") {
-        return "background-color: rgb(160,64,160)";
+        return "background: rgb(160,64,160)";
     }
     if (value === "ground") {
-        return "background-color: rgb(223,191,104)";
+        return "background: rgb(223,191,104)";
     }
     if (value === "flying") {
-        return "background-color: rgb(168,144,240)";
+        return "background: rgb(168,144,240)";
     }
     if (value === "psychic") {
-        return "background-color: rgb(248,87,135)";
+        return "background: rgb(248,87,135)";
     }
     if (value === "bug") {
-        return "background-color: rgb(168,184,32)";
+        return "background: rgb(168,184,32)";
     }
     if (value === "rock") {
-        return "background-color: rgb(184,160,56)";
+        return "background: rgb(184,160,56)";
     }
     if (value === "ghost") {
-        return "background-color: rgb(112,88,152)";
+        return "background: rgb(112,88,152)";
     }
     if (value === "dark") {
-        return "background-color: rgb(112,88,72)";
+        return "background: rgb(112,88,72)";
     }
     if (value === "dragon") {
-        return "background-color: rgb(112,56,248)";
+        return "background: rgb(112,56,248)";
     }
     if (value === "steel") {
-        return "background-color: rgb(184,184,208)";
+        return "background: rgb(184,184,208)";
     }
     if (value === "fairy") {
-        return "background-color: rgb(240,182,188)";
+        return "background: rgb(240,182,188)";
     }
 }
