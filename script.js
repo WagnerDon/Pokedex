@@ -28,40 +28,48 @@ function init() {
 
 function renderHeader() {
     document.body.innerHTML = "";
-    document.body.innerHTML += `
+    document.body.innerHTML += headerHTML();
+}
+
+function headerHTML() {
+    return `
     <h1><img src="img/pokemon.png"></h1>
     <div class="d-flex align-items-center flex-wrap justify-content-center" id="content"></div>
     <img id="up" onclick="document.documentElement.scrollTop = 0" class="back-top position-fixed d-flex justify-content-center align-items-center d-none" src="img/up.png">
-    `;
+    `
+}
+
+function thisHTML(number, thisPokemon) {
+    return `
+<div id="test" class="position-fixed blackbox d-flex justify-content-center" onclick="remove('test')">
+    <div class="d-flex flex-column whole" style="${backgroundColor(thisPokemon["types"][0]["type"]["name"])}" onclick="event.stopPropagation()" style="background-color: rgba(255, 255, 255, 25%)">
+        <div class="upper align-items-center p-4 d-flex flex-column justify-content-between">
+            <div class="test w100 position-relative" onclick="remove('test')">
+                <img class="back" src="img/arrow.png">
+            </div>
+            <img class="position-absolute pokeball" src="img/pokeball.png">
+            <div class="w100 d-flex align-items-center justify-content-between">
+                <div>
+                    <h2>
+                        ${capital(thisPokemon["name"])}
+                    </h2>
+                    <div class="d-flex" id="type"></div>
+                </div>
+                <p>#${addZero(number)}</p>
+            </div>
+            <div class="position-relative card-img">
+                <img src="${thisPokemon["sprites"]["other"]["official-artwork"]["front_default"]}">
+            </div>
+        </div>
+        <div id="info" class="lower p-4 d-flex flex-column"></div>
+    </div>
+</div>
+`
 }
 
 async function renderThis(number) {
     const thisPokemon = await loadPokemon(number);
-    document.body.innerHTML += `
-    <div id="test" class="position-fixed blackbox d-flex justify-content-center" onclick="remove('test')">
-        <div class="d-flex flex-column whole" style="${backgroundColor(thisPokemon["types"][0]["type"]["name"])}" onclick="event.stopPropagation()" style="background-color: rgba(255, 255, 255, 25%)">
-            <div class="upper align-items-center p-4 d-flex flex-column justify-content-between">
-                <div class="test w100 position-relative" onclick="remove('test')">
-                    <img class="back" src="img/arrow.png">
-                </div>
-                <img class="position-absolute pokeball" src="img/pokeball.png">
-                <div class="w100 d-flex align-items-center justify-content-between">
-                    <div>
-                        <h2>
-                            ${capital(thisPokemon["name"])}
-                        </h2>
-                        <div class="d-flex" id="type"></div>
-                    </div>
-                    <p>#${addZero(number)}</p>
-                </div>
-                <div class="position-relative card-img">
-                    <img src="${thisPokemon["sprites"]["other"]["official-artwork"]["front_default"]}">
-                </div>
-            </div>
-            <div id="info" class="lower p-4 d-flex flex-column"></div>
-        </div>
-    </div>
-    `;
+    document.body.innerHTML += thisHTML(number, thisPokemon);
     for (let x = 0; x < thisPokemon["types"].length; x++) {
         document.getElementById("type").innerHTML += `
         <p class="deco">${capital(thisPokemon["types"][x]["type"]["name"])}</p>
@@ -77,11 +85,8 @@ async function getInfo(pokemonNumber) {
     return await payload.json();
 }
 
-async function stats(number) {
-    let thisPokemon = await loadPokemon(number);
-    let content = document.getElementById('info');
-    content.innerHTML = "";
-    content.innerHTML += `
+function statsHTML(number) {
+    return `
     <div style="z-index: 2" class="d-flex justify-content-between align-items-center">
         <h5 onclick="about(${number})" style="cursor: pointer">About</h5>
         <h5 id="stats">Stats</h5>
@@ -90,16 +95,27 @@ async function stats(number) {
     <div class="d-flex flex-column h100">
         <div id="stat" class="stats"></div>
     </div>
-    `;
+    `
+}
+
+function statHTML(x, thisPokemon) {
+    return `
+    <div class="d-flex justify-content-between align-items-center">
+            <p class="coherent">${capital(thisPokemon["stats"][x]["stat"]["name"])}:</p>
+            <div class="stat-bar"><div style="width: ${thisPokemon["stats"][x]["base_stat"]}%" class="meter w0"></div></div>
+            <p class="coherent2">${thisPokemon["stats"][x]["base_stat"]}</p>
+        </div>
+    `
+}
+
+async function stats(number) {
+    let thisPokemon = await loadPokemon(number);
+    let content = document.getElementById('info');
+    content.innerHTML = "";
+    content.innerHTML += statsHTML(number);
 
     for (let x = 0; x < thisPokemon["stats"].length; x++) {
-        document.getElementById('stat').innerHTML += `
-        <div class="d-flex justify-content-between align-items-center">
-                <p class="coherent">${capital(thisPokemon["stats"][x]["stat"]["name"])}:</p>
-                <div class="stat-bar"><div style="width: ${thisPokemon["stats"][x]["base_stat"]}%" class="meter w0"></div></div>
-                <p class="coherent2">${thisPokemon["stats"][x]["base_stat"]}</p>
-            </div>
-        `;
+        document.getElementById('stat').innerHTML += statHTML(x, thisPokemon);
     }
     document.getElementById('stats').classList.add('animate');
     for (let x = 0; x < document.getElementsByClassName('meter').length; x++) {
@@ -112,11 +128,8 @@ function playAnim(value) {
     who.classList.add('anim');
 }
 
-async function abilities(number) {
-    let thisPokemon = await loadPokemon(number);
-    let content = document.getElementById('info');
-    content.innerHTML = "";
-    content.innerHTML += `
+function abilitiesHTML(number) {
+    return `
     <div style="z-index: 2" class="d-flex justify-content-between align-items-center">
         <h5 onclick="about(${number})" style="cursor: pointer">About</h5>
         <h5 onclick="stats(${number})" style="cursor: pointer">Stats</h5>
@@ -125,7 +138,14 @@ async function abilities(number) {
     <div class="d-flex flex-column h100">
         <div id="stats" class="stats2" style="overflow: auto"></div>
     </div>
-    `;
+    `
+}
+
+async function abilities(number) {
+    let thisPokemon = await loadPokemon(number);
+    let content = document.getElementById('info');
+    content.innerHTML = "";
+    content.innerHTML += abilitiesHTML(number);
 
     for (let x = 0; x < thisPokemon["abilities"].length; x++) {
         ability(x, thisPokemon);
@@ -146,12 +166,8 @@ async function ability(x, thisPokemon) {
     document.getElementById('abilities').classList.add('animate');
 }
 
-async function about(number) {
-    let thisInfo = await getInfo(number);
-    let thisPokemon = await loadPokemon(number);
-    let content = document.getElementById('info');
-    content.innerHTML = "";
-    content.innerHTML += `
+function aboutHTML(thisPokemon, number, thisInfo) {
+    return `
     <div style="z-index: 2" class="d-flex justify-content-between align-items-center">
         <h5 id="about">About</h5>
         <h5 onclick="stats(${number})" style="cursor: pointer">Stats</h5>
@@ -187,7 +203,15 @@ async function about(number) {
             </div>
         </div>
     </div>
-    `;
+    `
+}
+
+async function about(number) {
+    let thisInfo = await getInfo(number);
+    let thisPokemon = await loadPokemon(number);
+    let content = document.getElementById('info');
+    content.innerHTML = "";
+    content.innerHTML += aboutHTML(thisPokemon, number, thisInfo);
     document.getElementById('about').classList.add('animate');
     for (let x = 0; x < document.getElementsByClassName('meter').length; x++) {
         setTimeout(() => { document.getElementsByClassName('meter')[x].classList.remove('w0'); }, 25);
