@@ -96,12 +96,20 @@ async function stats(number) {
         document.getElementById('stat').innerHTML += `
         <div class="d-flex justify-content-between align-items-center">
                 <p class="coherent">${capital(thisPokemon["stats"][x]["stat"]["name"])}:</p>
-                <div class="stat-bar"><div style="width: ${thisPokemon["stats"][x]["base_stat"]}%" class="meter"></div></div>
+                <div class="stat-bar"><div style="width: ${thisPokemon["stats"][x]["base_stat"]}%" class="meter w0"></div></div>
                 <p class="coherent2">${thisPokemon["stats"][x]["base_stat"]}</p>
             </div>
         `;
     }
     document.getElementById('stats').classList.add('animate');
+    for (let x = 0; x < document.getElementsByClassName('meter').length; x++) {
+        setTimeout(() => { document.getElementsByClassName('meter')[x].classList.remove('w0'); }, 25);
+    }
+}
+
+function playAnim(value) {
+    let who = document.getElementById(value);
+    who.classList.add('anim');
 }
 
 async function abilities(number) {
@@ -154,33 +162,36 @@ async function about(number) {
         <div class="stats">
             <div class="d-flex justify-content-between align-items-center">
                 <p class="coherent">Base Experience:</p>
-                <div class="stat-bar"><div style="width: ${thisPokemon["base_experience"]}%" class="meter"></div></div>
+                <div class="stat-bar"><div style="width: ${thisPokemon["base_experience"]}%" class="meter w0"></div></div>
                 <p class="coherent2">${thisPokemon["base_experience"]}</p>
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <p class="coherent">Base Happiness:</p>
-                <div class="stat-bar"><div style="width: ${thisInfo["base_happiness"]}%" class="meter"></div></div>
+                <div class="stat-bar"><div style="width: ${thisInfo["base_happiness"]}%" class="meter w0"></div></div>
                 <p class="coherent2">${thisInfo["base_happiness"]}</p>
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <p class="coherent">Capture Rate:</p>
-                <div class="stat-bar"><div style="width: ${thisInfo["capture_rate"]}%" class="meter"></div></div>
+                <div class="stat-bar"><div style="width: ${thisInfo["capture_rate"]}%" class="meter w0"></div></div>
                 <p class="coherent2">${thisInfo["capture_rate"]}</p>
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <p class="coherent">Height:</p>
-                <div class="stat-bar"><div style="width: ${thisPokemon["height"]}%" class="meter"></div></div>
+                <div class="stat-bar"><div style="width: ${thisPokemon["height"]}%" class="meter w0"></div></div>
                 <p class="coherent2">${thisPokemon["height"]}</p>
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <p class="coherent">Weight:</p>
-                <div class="stat-bar"><div style="width: ${thisPokemon["weight"]}%" class="meter"></div></div>
+                <div class="stat-bar"><div style="width: ${thisPokemon["weight"]}%" class="meter w0"></div></div>
                 <p class="coherent2">${thisPokemon["weight"]}</p>
             </div>
         </div>
     </div>
     `;
     document.getElementById('about').classList.add('animate');
+    for (let x = 0; x < document.getElementsByClassName('meter').length; x++) {
+        setTimeout(() => { document.getElementsByClassName('meter')[x].classList.remove('w0'); }, 25);
+    }
 }
 
 function addZero(value) {
