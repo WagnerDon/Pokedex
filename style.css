@@ -8,6 +8,10 @@ p {
     margin: unset !important;
 }
 
+h5 {
+    margin-bottom: 10px !important;
+}
+
 h1 img {
     height: 80px;
 }
@@ -18,7 +22,6 @@ h1 img {
     color: white !important;
     cursor: grab;
     box-shadow: 3px 3px 5px 0px rgb(0 0 0 / 25%);
-    border: solid 1px transparent !important;
 }
 
 .card:active {
@@ -27,8 +30,6 @@ h1 img {
 
 .card:hover {
     animation: hover 1s ease-in-out infinite;
-    border: solid 1px #FF3131 !important;
-    box-shadow: 0px 0px 5px 3px #FF3131;
 }
 
 @keyframes hover {
@@ -143,18 +144,18 @@ h1 img {
     position: absolute;
     height: 275px !important;
     width: 275px !important;
-    bottom: -50px;
+    bottom: -60px;
     z-index: 1;
 }
 
 .upper {
-    height: 50%;
+    height: 45%;
     color: white;
     position: relative;
 }
 
 .lower {
-    height: 50%;
+    height: 55%;
     background-color: white;
     border-radius: 12px;
     position: relative;
@@ -165,6 +166,81 @@ h1 img {
     column-gap: 10px;
 }
 
+.mb10 {
+    margin-bottom: 10px !important;
+}
+
+.h100 {
+    height: 100%;
+}
+
+.coherent {
+    width: 130px;
+}
+
+.coherent2 {
+    width: 25px;
+    text-align: center;
+}
+
+.stat-bar {
+    height: 5px;
+    overflow: hidden;
+    width: 250px;
+    border-radius: 12px;
+    box-shadow: inset 0 0 5px 0 rgb(0 0 0 / 25%);
+}
+
+.meter {
+    background-color: #1F51FF;
+    transition: all 1s;
+    width: 0%;
+    height: 100%;
+    border-radius: 12px;
+    box-shadow: inset 0 0 10px 0 black;
+    box-shadow: 3px 0 0 0 #FF3131;
+    animation: box-shadow 1s infinite;
+}
+
+@keyframes box-shadow {
+    50% {
+        background-color: #597dff;
+        box-shadow: 3px 0 0 0 #ff7631;
+    }
+
+    100% {
+        background-color: #1F51FF;
+        box-shadow: 3px 0 0 0 #ff3131;
+    }
+}
+
+.animate {
+    border-bottom: solid black;
+    animation: 500ms test ease-in-out;
+}
+
+@keyframes test {
+    from {
+        border-bottom: solid white;
+    }
+
+    to {
+        border-bottom: solid black;
+    }
+}
+
+.stats {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.stats2 {
+    height: 320px;
+    overflow: auto;
+}
+
 .back {
     height: 25px;
     width: 25px;
@@ -173,9 +249,8 @@ h1 img {
 }
 
 .test {
-    height: 25px;
     cursor: pointer;
-    margin-bottom: 1.5em;
+    height: 45px;
 }
 
 .test:hover .back {

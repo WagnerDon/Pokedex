@@ -41,7 +41,7 @@ async function renderThis(number) {
     <div id="test" class="position-fixed blackbox d-flex justify-content-center" onclick="remove('test')">
         <div class="d-flex flex-column whole" style="${backgroundColor(thisPokemon["types"][0]["type"]["name"])}" onclick="event.stopPropagation()" style="background-color: rgba(255, 255, 255, 25%)">
             <div class="upper align-items-center p-4 d-flex flex-column justify-content-between">
-                <div class="test position-relative w100" onclick="remove('test')">
+                <div class="test w100 position-relative" onclick="remove('test')">
                     <img class="back" src="img/arrow.png">
                 </div>
                 <img class="position-absolute pokeball" src="img/pokeball.png">
@@ -58,7 +58,7 @@ async function renderThis(number) {
                     <img src="${thisPokemon["sprites"]["other"]["official-artwork"]["front_default"]}">
                 </div>
             </div>
-            <div class="lower p-4"></div>
+            <div id="info" class="lower p-4 d-flex flex-column"></div>
         </div>
     </div>
     `;
@@ -68,6 +68,119 @@ async function renderThis(number) {
         `;
     }
     document.body.style.overflow = "hidden";
+    about(number);
+}
+
+async function getInfo(pokemonNumber) {
+    let url = `https://pokeapi.co/api/v2/pokemon-species/${pokemonNumber}`;
+    let payload = await fetch(url);
+    return await payload.json();
+}
+
+async function stats(number) {
+    let thisPokemon = await loadPokemon(number);
+    let content = document.getElementById('info');
+    content.innerHTML = "";
+    content.innerHTML += `
+    <div style="z-index: 2" class="d-flex justify-content-between align-items-center">
+        <h5 onclick="about(${number})" style="cursor: pointer">About</h5>
+        <h5 id="stats">Stats</h5>
+        <h5 onclick="abilities(${number})" style="cursor: pointer">Abilities</h5>
+    </div>
+    <div class="d-flex flex-column h100">
+        <div id="stat" class="stats"></div>
+    </div>
+    `;
+
+    for (let x = 0; x < thisPokemon["stats"].length; x++) {
+        document.getElementById('stat').innerHTML += `
+        <div class="d-flex justify-content-between align-items-center">
+                <p class="coherent">${capital(thisPokemon["stats"][x]["stat"]["name"])}:</p>
+                <div class="stat-bar"><div style="width: ${thisPokemon["stats"][x]["base_stat"]}%" class="meter"></div></div>
+                <p class="coherent2">${thisPokemon["stats"][x]["base_stat"]}</p>
+            </div>
+        `;
+    }
+    document.getElementById('stats').classList.add('animate');
+}
+
+async function abilities(number) {
+    let thisPokemon = await loadPokemon(number);
+    let content = document.getElementById('info');
+    content.innerHTML = "";
+    content.innerHTML += `
+    <div style="z-index: 2" class="d-flex justify-content-between align-items-center">
+        <h5 onclick="about(${number})" style="cursor: pointer">About</h5>
+        <h5 onclick="stats(${number})" style="cursor: pointer">Stats</h5>
+        <h5 id="abilities">Abilities</h5>
+    </div>
+    <div class="d-flex flex-column h100">
+        <div id="stats" class="stats2" style="overflow: auto"></div>
+    </div>
+    `;
+
+    for (let x = 0; x < thisPokemon["abilities"].length; x++) {
+        ability(x, thisPokemon);
+    }
+}
+
+async function ability(x, thisPokemon) {
+    let replace = thisPokemon["abilities"][x]["ability"]["name"];
+    let url = `https://pokeapi.co/api/v2/ability/${replace}`;
+    let payload = await fetch(url);
+    let thisAbility = await payload.json();
+    document.getElementById('stats').innerHTML += `
+    <div class="d-flex flex-column">
+        <b style="margin-top: 10px">${capital(thisPokemon["abilities"][x]["ability"]["name"])}</b>
+        ${thisAbility["effect_entries"][1]["effect"]}
+    </div>
+    `;
+    document.getElementById('abilities').classList.add('animate');
+}
+
+async function about(number) {
+    let thisInfo = await getInfo(number);
+    let thisPokemon = await loadPokemon(number);
+    let content = document.getElementById('info');
+    content.innerHTML = "";
+    content.innerHTML += `
+    <div style="z-index: 2" class="d-flex justify-content-between align-items-center">
+        <h5 id="about">About</h5>
+        <h5 onclick="stats(${number})" style="cursor: pointer">Stats</h5>
+        <h5 onclick="abilities(${number})" style="cursor: pointer">Abilities</h5>
+    </div>
+    <div class="d-flex flex-column h100">
+        <p class="mb10">${thisInfo["flavor_text_entries"][0]["flavor_text"].replace("", " ")}</p>
+        <div class="stats">
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="coherent">Base Experience:</p>
+                <div class="stat-bar"><div style="width: ${thisPokemon["base_experience"]}%" class="meter"></div></div>
+                <p class="coherent2">${thisPokemon["base_experience"]}</p>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="coherent">Base Happiness:</p>
+                <div class="stat-bar"><div style="width: ${thisInfo["base_happiness"]}%" class="meter"></div></div>
+                <p class="coherent2">${thisInfo["base_happiness"]}</p>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="coherent">Capture Rate:</p>
+                <div class="stat-bar"><div style="width: ${thisInfo["capture_rate"]}%" class="meter"></div></div>
+                <p class="coherent2">${thisInfo["capture_rate"]}</p>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="coherent">Height:</p>
+                <div class="stat-bar"><div style="width: ${thisPokemon["height"]}%" class="meter"></div></div>
+                <p class="coherent2">${thisPokemon["height"]}</p>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+                <p class="coherent">Weight:</p>
+                <div class="stat-bar"><div style="width: ${thisPokemon["weight"]}%" class="meter"></div></div>
+                <p class="coherent2">${thisPokemon["weight"]}</p>
+            </div>
+        </div>
+    </div>
+    `;
+    document.getElementById('about').classList.add('animate');
 }
 
 function addZero(value) {
