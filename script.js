@@ -15,10 +15,16 @@ window.addEventListener('scroll', () => {
     }
 });
 
+let loading = false;
+
 async function loadPokemon(numberOfPokemon) {
-    let url = `https://pokeapi.co/api/v2/pokemon/${numberOfPokemon}`;
-    let payload = await fetch(url);
-    return await payload.json();
+    if (loading === false) {
+        loading = true;
+        let url = `https://pokeapi.co/api/v2/pokemon/${numberOfPokemon}`;
+        let payload = await fetch(url);
+        loading = false;
+        return await payload.json();
+    }
 }
 
 function init() {
